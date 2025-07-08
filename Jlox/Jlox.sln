@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jlox", "Jlox.csproj", "{424
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jlox.Tool", "..\Jlox.Tool\Jlox.Tool.csproj", "{94B0EB1B-DBAB-44A5-93B4-0F1AB62FE949}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jlox.Tests", "..\Jlox.Tests\Jlox.Tests.csproj", "{8F17ACDB-A17A-4554-B562-E5EC191619EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{94B0EB1B-DBAB-44A5-93B4-0F1AB62FE949}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94B0EB1B-DBAB-44A5-93B4-0F1AB62FE949}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94B0EB1B-DBAB-44A5-93B4-0F1AB62FE949}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F17ACDB-A17A-4554-B562-E5EC191619EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F17ACDB-A17A-4554-B562-E5EC191619EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F17ACDB-A17A-4554-B562-E5EC191619EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F17ACDB-A17A-4554-B562-E5EC191619EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
