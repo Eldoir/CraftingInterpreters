@@ -38,6 +38,10 @@ public partial class GenerateAst
             "{"
         ];
 
+        lines.AddRange(DefineVisitor(baseName, types));
+        lines.Add(string.Empty);
+
+        // The AST classes.
         foreach (string type in types)
         {
             string[] split = type.Split(":");
@@ -52,13 +56,33 @@ public partial class GenerateAst
 
         #region Local methods
 
+        static List<string> DefineVisitor(string baseName, List<string> types)
+        {
+            List<string> lines = [
+                "\tpublic interface IVisitor<T>",
+                "\t{"
+            ];
+
+            foreach (string type in types)
+            {
+                string typeName = type.Split(":")[0].Trim();
+                lines.Add($"\t\tT Visit{typeName}{baseName}({typeName} {baseName.ToLower()});");
+            }
+
+            lines.Add("\t}");
+            lines.Add(string.Empty);
+            lines.Add("\tpublic abstract T Accept<T>(IVisitor<T> visitor);");
+
+            return lines;
+        }
+
          static List<string> DefineType(
              string baseName,
              string className,
              string fieldList)
         {
             // Construcctor
-            List<string> result = [
+            List<string> lines = [
                 $"\tpublic class {className} : {baseName}",
                 "\t{",
                 $"\t\t{className}({fieldList})",
@@ -70,22 +94,29 @@ public partial class GenerateAst
             foreach (string field in fields)
             {
                 string name = field.Split(" ")[1];
-                result.Add($"\t\t\tthis._{name} = {name};");
+                lines.Add($"\t\t\tthis._{name} = {name};");
             }
 
-            result.Add("\t\t}");
-            result.Add(string.Empty);
+            lines.Add("\t\t}");
+            lines.Add(string.Empty);
+
+            // Visitor pattern
+            lines.Add("\t\tpublic override T Accept<T>(IVisitor<T> visitor)");
+            lines.Add("\t\t{");
+            lines.Add($"\t\t\treturn visitor.Visit{className}{baseName}(this);");
+            lines.Add("\t\t}");
+            lines.Add(string.Empty);
 
             // Fields
             foreach (string field in fields)
             {
                 string[] typeAndName = field.Split(" ");
-                result.Add($"\t\tprivate readonly {typeAndName[0]} _{typeAndName[1]};");
+                lines.Add($"\t\tprivate readonly {typeAndName[0]} _{typeAndName[1]};");
             }
 
-            result.Add("\t}");
+            lines.Add("\t}");
 
-            return result;
+            return lines;
         }
         #endregion
     }

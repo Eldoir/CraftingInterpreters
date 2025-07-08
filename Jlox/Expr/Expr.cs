@@ -2,6 +2,16 @@ namespace Jlox;
 
 public abstract class Expr
 {
+	public interface IVisitor<T>
+	{
+		T VisitBinaryExpr(Binary expr);
+		T VisitGroupingExpr(Grouping expr);
+		T VisitLiteralExpr(Literal expr);
+		T VisitUnaryExpr(Unary expr);
+	}
+
+	public abstract T Accept<T>(IVisitor<T> visitor);
+
 	public class Binary : Expr
 	{
 		Binary(Expr left, Token op, Expr right)
@@ -9,6 +19,11 @@ public abstract class Expr
 			this._left = left;
 			this._op = op;
 			this._right = right;
+		}
+
+		public override T Accept<T>(IVisitor<T> visitor)
+		{
+			return visitor.VisitBinaryExpr(this);
 		}
 
 		private readonly Expr _left;
@@ -23,6 +38,11 @@ public abstract class Expr
 			this._expression = expression;
 		}
 
+		public override T Accept<T>(IVisitor<T> visitor)
+		{
+			return visitor.VisitGroupingExpr(this);
+		}
+
 		private readonly Expr _expression;
 	}
 
@@ -31,6 +51,11 @@ public abstract class Expr
 		Literal(object value)
 		{
 			this._value = value;
+		}
+
+		public override T Accept<T>(IVisitor<T> visitor)
+		{
+			return visitor.VisitLiteralExpr(this);
 		}
 
 		private readonly object _value;
@@ -42,6 +67,11 @@ public abstract class Expr
 		{
 			this._op = op;
 			this._right = right;
+		}
+
+		public override T Accept<T>(IVisitor<T> visitor)
+		{
+			return visitor.VisitUnaryExpr(this);
 		}
 
 		private readonly Token _op;
