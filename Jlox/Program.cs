@@ -1,4 +1,4 @@
-﻿using Jlox;
+﻿namespace Jlox;
 
 public partial class Program
 {
