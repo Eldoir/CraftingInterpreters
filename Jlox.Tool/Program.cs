@@ -81,20 +81,32 @@ public partial class GenerateAst
              string className,
              string fieldList)
         {
-            // Construcctor
+            // Start of class
             List<string> lines = [
                 $"\tpublic class {className} : {baseName}",
-                "\t{",
-                $"\t\t{className}({fieldList})",
-                "\t\t{"
+                "\t{"
             ];
 
-            // Store parameters in fields
             string[] fields = fieldList.Split(", ");
+
+            // Public properties
+            foreach (string field in fields)
+            {
+                string[] typeAndName = field.Split(" ");
+                lines.Add($"\t\tpublic {typeAndName[0]} {typeAndName[1].ToFirstLetterUpper()} {{ get; }}");
+            }
+
+            lines.Add(string.Empty);
+
+            // Constructor
+            lines.Add($"\t\tpublic {className}({fieldList})");
+            lines.Add("\t\t{");
+
+            // Store parameters in properties
             foreach (string field in fields)
             {
                 string name = field.Split(" ")[1];
-                lines.Add($"\t\t\tthis._{name} = {name};");
+                lines.Add($"\t\t\t{name.ToFirstLetterUpper()} = {name};");
             }
 
             lines.Add("\t\t}");
@@ -105,19 +117,20 @@ public partial class GenerateAst
             lines.Add("\t\t{");
             lines.Add($"\t\t\treturn visitor.Visit{className}{baseName}(this);");
             lines.Add("\t\t}");
-            lines.Add(string.Empty);
 
-            // Fields
-            foreach (string field in fields)
-            {
-                string[] typeAndName = field.Split(" ");
-                lines.Add($"\t\tprivate readonly {typeAndName[0]} _{typeAndName[1]};");
-            }
-
+            // End of class
             lines.Add("\t}");
 
             return lines;
         }
         #endregion
+    }
+}
+
+public static class StringExtensions
+{
+    public static string ToFirstLetterUpper(this string s)
+    {
+        return s.Substring(0, 1).ToUpper() + s.Substring(1);
     }
 }

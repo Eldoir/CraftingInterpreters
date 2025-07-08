@@ -14,68 +14,68 @@ public abstract class Expr
 
 	public class Binary : Expr
 	{
-		Binary(Expr left, Token op, Expr right)
+		public Expr Left { get; }
+		public Token Op { get; }
+		public Expr Right { get; }
+
+		public Binary(Expr left, Token op, Expr right)
 		{
-			this._left = left;
-			this._op = op;
-			this._right = right;
+			Left = left;
+			Op = op;
+			Right = right;
 		}
 
 		public override T Accept<T>(IVisitor<T> visitor)
 		{
 			return visitor.VisitBinaryExpr(this);
 		}
-
-		private readonly Expr _left;
-		private readonly Token _op;
-		private readonly Expr _right;
 	}
 
 	public class Grouping : Expr
 	{
-		Grouping(Expr expression)
+		public Expr Expression { get; }
+
+		public Grouping(Expr expression)
 		{
-			this._expression = expression;
+			Expression = expression;
 		}
 
 		public override T Accept<T>(IVisitor<T> visitor)
 		{
 			return visitor.VisitGroupingExpr(this);
 		}
-
-		private readonly Expr _expression;
 	}
 
 	public class Literal : Expr
 	{
-		Literal(object value)
+		public object Value { get; }
+
+		public Literal(object value)
 		{
-			this._value = value;
+			Value = value;
 		}
 
 		public override T Accept<T>(IVisitor<T> visitor)
 		{
 			return visitor.VisitLiteralExpr(this);
 		}
-
-		private readonly object _value;
 	}
 
 	public class Unary : Expr
 	{
-		Unary(Token op, Expr right)
+		public Token Op { get; }
+		public Expr Right { get; }
+
+		public Unary(Token op, Expr right)
 		{
-			this._op = op;
-			this._right = right;
+			Op = op;
+			Right = right;
 		}
 
 		public override T Accept<T>(IVisitor<T> visitor)
 		{
 			return visitor.VisitUnaryExpr(this);
 		}
-
-		private readonly Token _op;
-		private readonly Expr _right;
 	}
 
 }
